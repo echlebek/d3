@@ -34,8 +34,8 @@ var (
 //convert object with string fields into one with parsed fields
 func filterIntData(obj js.Object) js.Object {
 	result := js.Global.Get("Object").New()
-	result.Set("name", obj.Get("name").Str())
-	s := obj.Get("value").Str()
+	result.Set("name", obj.Get("name").String())
+	s := obj.Get("value").String()
 	i, err := strconv.ParseInt(s, 10, 64)
 	if err != nil {
 		console.Error("unable to parse ", s, " in the dataset: IGNORED")
@@ -58,7 +58,7 @@ func part2_bars(width int64, barHeight int64) {
 
 	//read sample data from the server
 	d3.TSV("sample.tsv", filterIntData, func(err js.Object, data js.Object) {
-		if !err.IsNull() {
+		if err != nil {
 			console.Error(err)
 			return
 		}
@@ -87,8 +87,8 @@ func part2_bars(width int64, barHeight int64) {
 
 func filterFloatData(obj js.Object) js.Object {
 	result := js.Global.Get("Object").New()
-	result.Set("letter", obj.Get("letter").Str())
-	s := obj.Get("frequency").Str()
+	result.Set("letter", obj.Get("letter").String())
+	s := obj.Get("frequency").String()
 	f, err := strconv.ParseFloat(s, 64)
 	if err != nil {
 		console.Error("unable to parse ", s, " in the dataset: IGNORED")
@@ -133,7 +133,7 @@ func part3_bars(overall_width, overall_height, top, right, bottom, left int64) {
 		AttrS(propXform, fmt.Sprintf("translate(%d,%d)", left, top))
 
 	d3.TSV("letter_freq.tsv", filterFloatData, func(err js.Object, data js.Object) {
-		if !err.IsNull() {
+		if err != nil {
 			console.Error(err)
 			return
 		}
